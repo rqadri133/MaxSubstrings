@@ -10,16 +10,28 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Text;
-using System;
 using System.Diagnostics;
-
+using System;
+using System.Data.SqlTypes;
 
 public class SubSet 
 {
     public string? current {get;set;}
     public int numCount {get;set;}
+    public int StartIndex {get;set;}
+    public int EndIndex {get;set;}
     
 }
+
+public class ASSCIIBytesBase 
+{
+
+    public byte[]? bytes {get;set;}
+    public int Index {get;set;}
+
+
+} 
+
 class Result
 {
 
@@ -31,38 +43,56 @@ class Result
      *  1. STRING s
      *  2. 2D_INTEGER_ARRAY queries
      */
+     private static bool VerifyString(string currentString , HashSet<ASSCIIBytesBase> aSSCIIBytesBases)
+     { 
 
-    private static int NFormulaeRules(string subset)
-    {
-        int n = subset.Length;
-        return n * (n + 1) / 2;
-        
-    }
-    
-    public static int GetNumberofSubstring(string subset)
+            string template = String.Empty;
+            bool isFound = false;
+             foreach(ASSCIIBytesBase aSSCIIBytes in aSSCIIBytesBases)
+             {
+
+                template = Encoding.ASCII.GetString(aSSCIIBytes.bytes!);
+                if(template == currentString)
+                {
+                    isFound = true;
+                    template = String.Empty;
+                    return isFound;
+
+                }
+             }
+             template = String.Empty;
+             return isFound;
+     }
+
+     public static int GetNumberToBytesHexa(string subset)
     {
         /// <summary>
         /// Diagnorstics time exexution for this model 
         /// </summary>
         int startIndex =0;
+        int count = 0;
         int currentLength = subset.Length;
       //  List<string> subsets = new List<string>();
-        StringBuilder builder = new StringBuilder();
+        HashSet<byte[]> builder = new HashSet<byte[]>();
+         ReadOnlySpan<char> current ;
 
+   
         int total_count = 0;
+       try 
+       {
         while(currentLength > 0)    
         {
             for(int endIndex =1 ; endIndex <= currentLength ; endIndex++ )
             {
                if(endIndex <= subset.Length)
                {
-               ReadOnlySpan<char> current = subset.AsSpan(startIndex,endIndex);
+                current = subset.AsSpan(startIndex,endIndex);
                
                   // Dont use has
                    // performance hashset is faster
-                   builder.Append(current.ToString());
-                   builder.AppendLine();
-                   //total_count = total_count + 1;      
+                  //var asciibyteObj = new ASSCIIBytesBase();
+                   var currentbytes = Encoding.ASCII.GetBytes(current.ToString());
+                   builder.Add(currentbytes);
                 
                
                }          
@@ -70,45 +100,126 @@ class Result
             startIndex = startIndex + 1;
 
             currentLength = currentLength - 1; 
+            // Add Total memory comparison ...
 
         }
+       //   totalstring = builder.ToString().TrimEnd('\n');
+        // List<string> arry = totalstring.Split("\n".ToCharArray()).Distinct<string>().ToList();     
+        //  totalstring = null;
+         count = builder.Distinct<byte[]>().ToList<byte[]>().Count;
+         builder.Clear();
+         builder.TrimExcess();
+         
+       //  arry.Clear();
+        // arry.TrimExcess();
+       }
+       catch(Exception st)
+       {
+           Console.WriteLine($"Exception is {st.Message} {startIndex}");
+           
+       }
        
-         List<string> arry = builder.ToString().Split("\n".ToCharArray()).Distinct<string>().ToList();
-         int count = arry.Count;
+       
+         //GC.Collect(0, GCCollectionMode.Forced);
+        return count ;
+        
+        
+    }
+     
+public static int GetNumberofSubstring(string subset)
+    {
+        /// <summary>
+        /// Diagnorstics time exexution for this model 
+        /// </summary>
+        int startIndex =0;
+        int count = 0;
+        int currentLength = subset.Length;
+         string totalstring = String.Empty;
+      //  List<string> subsets = new List<string>();
+        StringBuilder builder = new StringBuilder(32);
+         ReadOnlySpan<char> current ;
+
+   
+        int total_count = 0;
+       try 
+       {
+        while(currentLength > 0)    
+        {
+            for(int endIndex =1 ; endIndex <= currentLength ; endIndex++ )
+            {
+               if(endIndex <= subset.Length)
+               {
+                current = subset.AsSpan(startIndex,endIndex);
+               
+                  // Dont use has
+                   // performance hashset is faster
+                   builder.Append(current.ToString());
+                   builder.AppendLine();
+                   total_count = total_count + 1;      
+                
+               
+               }          
+            }
+            startIndex = startIndex + 1;
+
+            currentLength = currentLength - 1; 
+            // Add Total memory comparison ...
+
+        }
+          totalstring = builder.ToString().TrimEnd('\n');
+         List<string> arry = totalstring.Split("\n".ToCharArray()).Distinct<string>().ToList();     
+          totalstring = String.Empty;
+        count = arry.Count;
          builder.Clear();
          
          arry.Clear();
          arry.TrimExcess();
-         GC.Collect(0, GCCollectionMode.Forced);
+       }
+       catch(Exception st)
+       {
+           Console.WriteLine($"Exception is {st.Message} {startIndex}");
+           
+       }
+       
+       
+         //GC.Collect(0, GCCollectionMode.Forced);
         return count ;
         
         
     }
     public static List<int> countSubstrings(string s, List<List<int>> queries)
     {
-         int[][] selectedq = queries.Select(a => a.ToArray()).ToArray();
+        Process proc = Process.GetCurrentProcess();
+var div = Math.Pow(1000,2);
 
-         List<int> nums = new List<int>();
+var memory = proc.WorkingSet64 /div;
+
+var available = proc.MaxWorkingSet / div ;
+
+Console.WriteLine($"Available Memory in MB {available} and current occupied is  MB {memory}  ");
+
+List<int> nums = new List<int>();
          int startIndex = 0;
          int endIndex = 0;
          int total_distance = 0;
          List<SubSet> lstsets = new List<SubSet>();
          
+        queries = queries.GetRange(8,1);
          
-         
-        for(int i=0 ; i < selectedq.Length ; i++)
+        for(int i=0 ; i < queries.Count ; i++)
         {
-            for(int k=0 ; k < selectedq[i].Length - 1 ; k++)
+            for(int k=0 ; k < queries[i].Count - 1 ; k++)
             {
-                startIndex = selectedq[i][k];
-                endIndex  = selectedq[i][k+1] - selectedq[i][k] + 1 ;
+                startIndex = queries[i][k];
+                endIndex  = queries[i][k+1] - queries[i] [k] + 1 ;
                 total_distance = startIndex + endIndex ;
-
-                if( (endIndex <= s.Length && endIndex >=0) && (s.Length >= total_distance) )
-                {
+if( (endIndex <= s.Length && endIndex >=0) && (s.Length >= total_distance) )
+    
+               {
                    ReadOnlySpan<char> sub_str = s.AsSpan(startIndex , endIndex);
                    var subs = new SubSet();
                    subs.current = sub_str.ToString(); 
+                   Console.WriteLine($"Currently adding {subs.current} with startIndex {startIndex} and {endIndex} ");
                     lstsets.Add(subs);  
                    //nums.Add(GetNumberofSubstring(sub_str));
                 }
@@ -121,23 +232,40 @@ class Result
             }
             
         }
-        queries.Clear();
-        queries.TrimExcess();
-        // Memory Available Here 
         
         
-        Parallel.ForEach(lstsets , p => 
+        var memorystatus = proc.WorkingSet64 /div;
+
+Console.WriteLine($"Available Memory is M {available} and current occupied is MB  {memorystatus}  ");  
+
+
+queries.Clear();
+
+queries.TrimExcess();
+
+   Parallel.ForEach(lstsets , p => 
         {
-             p.numCount = GetNumberofSubstring(p.current);
+             p.numCount = Result.GetNumberToBytesHexa(p.current!);
+             //Console.WriteLine($"For the index from {p.current} To total number of subset of substring count is {p.numCount}");
+
+             p.current = null;
+
             
         });
         
+
+
         var countnums = from setIn in lstsets 
                select setIn.numCount ;
          nums = countnums.ToList<int>();
+
+        lstsets.Clear();
+         lstsets.TrimExcess();
+         
         return nums;
 
-    }
+
+}
 
 }
 

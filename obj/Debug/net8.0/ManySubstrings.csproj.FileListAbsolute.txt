@@ -1,12 +1,13 @@
-/Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/ManySubstrings.GeneratedMSBuildEditorConfig.editorconfig
-/Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/ManySubstrings.AssemblyInfoInputs.cache
-/Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/ManySubstrings.AssemblyInfo.cs
-/Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/ManySubstrings.csproj.CoreCompileInputs.cache
 /Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/bin/Debug/net8.0/ManySubstrings
 /Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/bin/Debug/net8.0/ManySubstrings.deps.json
 /Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/bin/Debug/net8.0/ManySubstrings.runtimeconfig.json
 /Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/bin/Debug/net8.0/ManySubstrings.dll
 /Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/bin/Debug/net8.0/ManySubstrings.pdb
+/Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/ManySubstrings.GeneratedMSBuildEditorConfig.editorconfig
+/Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/ManySubstrings.AssemblyInfoInputs.cache
+/Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/ManySubstrings.AssemblyInfo.cs
+/Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/ManySubstrings.csproj.CoreCompileInputs.cache
+/Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/ManySubstrings.sourcelink.json
 /Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/ManySubstrings.dll
 /Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/refint/ManySubstrings.dll
 /Users/syedqadri/Documents/hackerrankskills/max substrings/ManySubstrings/obj/Debug/net8.0/ManySubstrings.pdb

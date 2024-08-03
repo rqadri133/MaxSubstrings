@@ -20,17 +20,18 @@ Console.WriteLine("Calculate Many Substrings, World!");
 
 
 Process proc = Process.GetCurrentProcess();
-var memory = proc.WorkingSet64 /(1024*1024);
-var available = proc.MaxWorkingSet/(Math.Pow(1024,8)) ;
+int div = 1000 * 1000;
+var memory = proc.WorkingSet64 /div;
+var available = proc.MaxWorkingSet/div ;
 
-Console.WriteLine($"Available Memory in GB {available} and current occupied is  MB {memory}  ");
+Console.WriteLine($"Available Memory in MB {available} and current occupied is  MB {memory}  ");
 
 
  List<Line> currentlines  = FileContextReader.ReadFile(Environment.CurrentDirectory + "//input/input003.txt");
 // data index starts from 2 in our test case
 string s = currentlines[1].LineContent;
 
-currentlines = currentlines.GetRange(2, currentlines.Count-2);
+currentlines = currentlines.GetRange(10, 1);
 
 int startIndex = 0 ;
 int endIndex = 0;
@@ -44,11 +45,12 @@ foreach (var line in currentlines)
    startIndex = Convert.ToInt32(startIndexrange[0]);
    endIndex = Convert.ToInt32(startIndexrange[1]) - startIndex + 1;
    total_distance = startIndex + endIndex;
-    if( (endIndex <= s.Length && endIndex >=0) && (s.Length >= total_distance) )
-                {
+      if( (endIndex <= s.Length && endIndex >=0) && (s.Length >= total_distance) )
+                  {
                    ReadOnlySpan<char> sub_str = s.AsSpan(startIndex , endIndex);
                    var subs = new SubSet();
                    subs.current = sub_str.ToString(); 
+                   Console.WriteLine($"Currently adding {subs.current} with startIndex {startIndex} and {endIndex} ");
                     lstsets.Add(subs);  
                    //nums.Add(GetNumberofSubstring(sub_str));
                 }
@@ -65,14 +67,16 @@ foreach (var line in currentlines)
     
 }
 
+   // Minimize memory by ziiping it GZIP
+
         currentlines.Clear();
         currentlines.TrimExcess();
         // Memory Available Here 
         
         
-        var memorystatus = proc.WorkingSet64 /(1024*1024);
+        var memorystatus = proc.WorkingSet64 /div;
 
-Console.WriteLine($"Available Memory is GB {available} and current occupied is MB  {memorystatus}  ");
+Console.WriteLine($"Available Memory is MB {available} and current occupied is MB  {memorystatus}  ");
 
         Parallel.ForEach(lstsets , p => 
         {
