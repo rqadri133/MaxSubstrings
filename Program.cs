@@ -14,6 +14,7 @@ using System;
 using System.Diagnostics;
 using ManySubstrings.Classes;
 using ManySubstrings.Classes.Util;
+using Microsoft.VisualBasic;
 // See https://aka.ms/new-console-template for more information
 Console.WriteLine("Calculate Many Substrings, World!");
 
@@ -27,18 +28,30 @@ var available = proc.MaxWorkingSet/div ;
 Console.WriteLine($"Available Memory in MB {available} and current occupied is  MB {memory}  ");
 
 
- List<Line> currentlines  = FileContextReader.ReadFile(Environment.CurrentDirectory + "//input/input003.txt");
+ List<Line> totallines  = FileContextReader.ReadFile(Environment.CurrentDirectory + "//input/input003.txt");
 // data index starts from 2 in our test case
-string s = currentlines[1].LineContent;
+string s = totallines[1].LineContent;
 
-currentlines = currentlines.GetRange(10, 1);
+int batch_factor = 10;
+int start_index_batch = 2;
+int total_counts = totallines.Count - 2;
+int remainder = total_counts % batch_factor;
+int result = total_counts / batch_factor;
+
+
+
+List<int> nums = new List<int>();
+
+
+           Console.WriteLine($"Current start_batch completed {start_index_batch} to {total_counts}");
+
+  List<Line> currentlines = totallines.GetRange(start_index_batch, total_counts);
 
 int startIndex = 0 ;
 int endIndex = 0;
 string[] startIndexrange; 
 int total_distance = 0;
 List<SubSet> lstsets = new List<SubSet>();
-List<int> nums = new List<int>();
 foreach (var line in currentlines)
 {
    startIndexrange =line.LineContent.Split(" ");
@@ -50,7 +63,7 @@ foreach (var line in currentlines)
                    ReadOnlySpan<char> sub_str = s.AsSpan(startIndex , endIndex);
                    var subs = new SubSet();
                    subs.current = sub_str.ToString(); 
-                   Console.WriteLine($"Currently adding {subs.current} with startIndex {startIndex} and {endIndex} ");
+                   //Console.WriteLine($"Currently adding {subs.current} with startIndex {startIndex} and {endIndex} ");
                     lstsets.Add(subs);  
                    //nums.Add(GetNumberofSubstring(sub_str));
                 }
@@ -76,27 +89,35 @@ foreach (var line in currentlines)
         
         var memorystatus = proc.WorkingSet64 /div;
 
-Console.WriteLine($"Available Memory is MB {available} and current occupied is MB  {memorystatus}  ");
+    Console.WriteLine($"Available Memory is MB {available} and current occupied is MB  {memorystatus}  ");
 
-        Parallel.ForEach(lstsets , p => 
+       
+        foreach(var p in lstsets.ToList() )
         {
-             p.numCount = Result.GetNumberofSubstring(p.current!);
+             p.numCount = Result.countDistinctSubstring(p.current!);
              //Console.WriteLine($"For the index from {p.current} To total number of subset of substring count is {p.numCount}");
 
              p.current = null;
+             lstsets.Remove(p);
+             
+            
 
             
-        });
+        }
         
 
 
         var countnums = from setIn in lstsets 
                select setIn.numCount ;
-         nums = countnums.ToList<int>();
-
+               
+        
+        nums = countnums.ToList<int>();
         lstsets.Clear();
          lstsets.TrimExcess();
 
+        Console.WriteLine($"Current start_batch completed {start_index_batch}  ");
+
+ 
          foreach(var i in nums)
          Console.WriteLine(i);
 

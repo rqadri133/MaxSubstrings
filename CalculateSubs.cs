@@ -31,9 +31,49 @@ public class ASSCIIBytesBase
 
 
 } 
-
+class NodeString {
+    public bool isWord;
+    public NodeString[] childnode = new NodeString[26];
+    public NodeString()
+    {
+      this.isWord=false;
+      for (int i = 0; i < 26; i++) {
+        childnode[i] = null;
+      }
+    }
+  }
+ 
+  
 class Result
 {
+
+    public static int countDistinctSubstring(string str)
+  {
+    NodeString head = new NodeString();
+ 
+    // will hold the count of unique substrings
+    int count = 0;
+    // included count of substr " "
+ 
+    for (int i = 0; i < str.Length; i++) {
+      NodeString temp = head;
+ 
+      for (int j = i; j < str.Length; j++)
+      {
+         
+        // when char not present add it to the trie
+        if (temp.childnode[str[j] - 'a'] == null) {
+          temp.childnode[str[j] - 'a'] = new NodeString();
+          temp.isWord = true;
+          count++;
+        }
+        // move on to the next char
+        temp = temp.childnode[str[j] - 'a'];
+      }
+    }
+ 
+    return count;
+  }
 
     /*
      * Complete the 'countSubstrings' function below.
@@ -92,8 +132,10 @@ class Result
                    // performance hashset is faster
                   //var asciibyteObj = new ASSCIIBytesBase();
                    var currentbytes = Encoding.ASCII.GetBytes(current.ToString());
-                   builder.Add(currentbytes);
-                
+                  if(!builder.Contains(currentbytes))
+                  {
+                     builder.Add(currentbytes);
+                  }
                
                }          
             }
@@ -245,7 +287,7 @@ queries.TrimExcess();
 
    Parallel.ForEach(lstsets , p => 
         {
-             p.numCount = Result.GetNumberToBytesHexa(p.current!);
+             p.numCount = Result.GetNumberofSubstring(p.current!);
              //Console.WriteLine($"For the index from {p.current} To total number of subset of substring count is {p.numCount}");
 
              p.current = null;
