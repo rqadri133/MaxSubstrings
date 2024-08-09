@@ -98,7 +98,7 @@ foreach (var line in currentlines)
              nums.Add(p.numCount);
              p.current = null;
              lstsets.Remove(p);
-            GC.Collect(20, GCCollectionMode.Forced, false);
+             GC.Collect(1, GCCollectionMode.Forced, false);
 
 
              
