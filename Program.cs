@@ -90,7 +90,6 @@ foreach (var line in currentlines)
         var memorystatus = proc.WorkingSet64 /div;
 
     Console.WriteLine($"Available Memory is MB {available} and current occupied is MB  {memorystatus}  ");
-
        
         foreach(var p in lstsets.ToList() )
         {
@@ -99,6 +98,8 @@ foreach (var line in currentlines)
              nums.Add(p.numCount);
              p.current = null;
              lstsets.Remove(p);
+            GC.Collect(20, GCCollectionMode.Forced, false);
+
 
              
             
@@ -111,7 +112,6 @@ foreach (var line in currentlines)
         lstsets.Clear();
          lstsets.TrimExcess();
        
-        GC.Collect(2000, GCCollectionMode.Forced, false);
         
 
  
