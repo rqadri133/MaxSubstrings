@@ -96,9 +96,10 @@ foreach (var line in currentlines)
         {
              p.numCount = Result.countDistinctSubstring(p.current!);
              //Console.WriteLine($"For the index from {p.current} To total number of subset of substring count is {p.numCount}");
-
+             nums.Add(p.numCount);
              p.current = null;
              lstsets.Remove(p);
+
              
             
 
@@ -106,16 +107,12 @@ foreach (var line in currentlines)
         }
         
 
-
-        var countnums = from setIn in lstsets 
-               select setIn.numCount ;
-               
         
-        nums = countnums.ToList<int>();
         lstsets.Clear();
          lstsets.TrimExcess();
-
-        Console.WriteLine($"Current start_batch completed {start_index_batch}  ");
+       
+        GC.Collect(2000, GCCollectionMode.Forced, false);
+        
 
  
          foreach(var i in nums)
