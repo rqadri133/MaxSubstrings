@@ -28,7 +28,11 @@ var available = proc.MaxWorkingSet/div ;
 Console.WriteLine($"Available Memory in MB {available} and current occupied is  MB {memory}  ");
 
 
- List<Line> totallines  = FileContextReader.ReadFile(Environment.CurrentDirectory + "//input/input003.txt");
+foreach(var item in Directory.GetFiles((Environment.CurrentDirectory + "//input/")))
+{
+   List<int> nums = new List<int>();
+
+ List<Line> totallines  = FileContextReader.ReadFile(item);
 // data index starts from 2 in our test case
 string s = totallines[1].LineContent;
 
@@ -40,12 +44,11 @@ int result = total_counts / batch_factor;
 
 
 
-List<int> nums = new List<int>();
 
 
            Console.WriteLine($"Current start_batch completed {start_index_batch} to {total_counts}");
 
-  List<Line> currentlines = totallines.GetRange(start_index_batch, total_counts);
+  List<Line> currentlines = totallines.GetRange(start_index_batch, 20);
 
 int startIndex = 0 ;
 int endIndex = 0;
@@ -101,6 +104,7 @@ foreach (var line in currentlines)
              GC.Collect(1, GCCollectionMode.Forced, false);
 
 
+
              
             
 
@@ -111,12 +115,10 @@ foreach (var line in currentlines)
         
         lstsets.Clear();
          lstsets.TrimExcess();
-       
-        
-
- 
          foreach(var i in nums)
          Console.WriteLine(i);
+       
+}  
 
 
 

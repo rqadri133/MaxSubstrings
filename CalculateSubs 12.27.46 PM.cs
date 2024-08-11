@@ -67,6 +67,8 @@ class Result
           temp.isWord = true;
           count++;
         }
+        Console.WriteLine($"Current structure index is {str[j] - 'a'} and node is {temp.childnode[str[j] - 'a']}"); 
+
         // move on to the next char
         temp = temp.childnode[str[j] - 'a'];
       }
