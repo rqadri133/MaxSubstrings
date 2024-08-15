@@ -67,7 +67,6 @@ class Result
           temp.isWord = true;
           count++;
         }
-        Console.WriteLine($"Current structure index is {str[j] - 'a'} and node is {temp.childnode[str[j] - 'a']}"); 
 
         // move on to the next char
         temp = temp.childnode[str[j] - 'a'];
@@ -263,7 +262,6 @@ if( (endIndex <= s.Length && endIndex >=0) && (s.Length >= total_distance) )
                    ReadOnlySpan<char> sub_str = s.AsSpan(startIndex , endIndex);
                    var subs = new SubSet();
                    subs.current = sub_str.ToString(); 
-                   Console.WriteLine($"Currently adding {subs.current} with startIndex {startIndex} and {endIndex} ");
                     lstsets.Add(subs);  
                    //nums.Add(GetNumberofSubstring(sub_str));
                 }

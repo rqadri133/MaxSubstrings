@@ -48,7 +48,7 @@ int result = total_counts / batch_factor;
 
            Console.WriteLine($"Current start_batch completed {start_index_batch} to {total_counts}");
 
-  List<Line> currentlines = totallines.GetRange(start_index_batch, 20);
+  List<Line> currentlines = totallines.GetRange(2, total_counts);
 
 int startIndex = 0 ;
 int endIndex = 0;
