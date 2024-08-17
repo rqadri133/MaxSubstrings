@@ -21,6 +21,8 @@ Console.WriteLine("Calculate Many Substrings, World!");
 
 
 Process proc = Process.GetCurrentProcess();
+TimeSpan timeSpan = proc.StartTime.TimeOfDay;
+Console.WriteLine($"Process Start  Time  {timeSpan.ToString()}  Hmmm  {timeSpan.Hours}  : {timeSpan.Minutes} : {timeSpan.Seconds} ");
 int div = 1000 * 1000;
 var memory = proc.WorkingSet64 /div;
 var available = proc.MaxWorkingSet/div ;
@@ -30,6 +32,8 @@ Console.WriteLine($"Available Memory in MB {available} and current occupied is  
 
 foreach(var item in Directory.GetFiles((Environment.CurrentDirectory + "//input/")))
 {
+   Console.WriteLine($"Process Start  Time with with new Test Case {item} {timeSpan.ToString()}  Hmmm  {timeSpan.Hours}  : {timeSpan.Minutes} : {timeSpan.Seconds} ");
+
    List<int> nums = new List<int>();
 
  List<Line> totallines  = FileContextReader.ReadFile(item);
@@ -55,6 +59,7 @@ int endIndex = 0;
 string[] startIndexrange; 
 int total_distance = 0;
 List<SubSet> lstsets = new List<SubSet>();
+List<char> arrChar = s.ToCharArray().ToList<char>();
 foreach (var line in currentlines)
 {
    startIndexrange =line.LineContent.Split(" ");
@@ -63,12 +68,12 @@ foreach (var line in currentlines)
    total_distance = startIndex + endIndex;
       if( (endIndex <= s.Length && endIndex >=0) && (s.Length >= total_distance) )
                   {
-                   ReadOnlySpan<char> sub_str = s.AsSpan(startIndex , endIndex);
-                   var subs = new SubSet();
-                   subs.current = sub_str.ToString(); 
+                   List<char> sub_str = arrChar.GetRange(startIndex,endIndex);
+                   //var subs = new SubSet();
+                   //subs.current = sub_str.ToString(); 
                    //Console.WriteLine($"Currently adding {subs.current} with startIndex {startIndex} and {endIndex} ");
-                    lstsets.Add(subs);  
-                   //nums.Add(GetNumberofSubstring(sub_str));
+                   // lstsets.Add(subs);  
+                   nums.Add(Result.countDistinctSubstring(sub_str));
                 }
                 else 
                 {
@@ -93,7 +98,7 @@ foreach (var line in currentlines)
         var memorystatus = proc.WorkingSet64 /div;
 
     Console.WriteLine($"Available Memory is MB {available} and current occupied is MB  {memorystatus}  ");
-       
+      /* 
         foreach(var p in lstsets.ToList() )
         {
              p.numCount = Result.countDistinctSubstring(p.current!);
@@ -101,7 +106,7 @@ foreach (var line in currentlines)
              nums.Add(p.numCount);
              p.current = null;
              lstsets.Remove(p);
-             GC.Collect(1, GCCollectionMode.Forced, false);
+             GC.Collect(5, GCCollectionMode.Forced,false);
 
 
 
@@ -111,12 +116,18 @@ foreach (var line in currentlines)
             
         }
         
-
+*/
         
         lstsets.Clear();
          lstsets.TrimExcess();
+         
+        GC.Collect(100, GCCollectionMode.Forced,false);
+
          foreach(var i in nums)
          Console.WriteLine(i);
+
+Console.WriteLine($"End Time  {timeSpan.ToString()}  in MilliSeconds {timeSpan.Milliseconds}  {timeSpan.Hours}  : {timeSpan.Minutes} : {timeSpan.Seconds} ");
+
        
 }  
 

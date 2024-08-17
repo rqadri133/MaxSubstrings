@@ -47,7 +47,7 @@ class NodeString {
 class Result
 {
 
-    public static int countDistinctSubstring(string str)
+    public static int countDistinctSubstring(List<char> str)
   {
     NodeString head = new NodeString();
  
@@ -55,10 +55,10 @@ class Result
     int count = 0;
     // included count of substr " "
  
-    for (int i = 0; i < str.Length; i++) {
+    for (int i = 0; i < str.Count; i++) {
       NodeString temp = head;
  
-      for (int j = i; j < str.Length; j++)
+      for (int j = i; j < str.Count; j++)
       {
          
         // when char not present add it to the trie
