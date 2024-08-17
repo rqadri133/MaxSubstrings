@@ -58,7 +58,6 @@ int startIndex = 0 ;
 int endIndex = 0;
 string[] startIndexrange; 
 int total_distance = 0;
-List<SubSet> lstsets = new List<SubSet>();
 List<char> arrChar = s.ToCharArray().ToList<char>();
 foreach (var line in currentlines)
 {
@@ -118,8 +117,6 @@ foreach (var line in currentlines)
         
 */
         
-        lstsets.Clear();
-         lstsets.TrimExcess();
          
         GC.Collect(100, GCCollectionMode.Forced,false);
 
