@@ -27,16 +27,46 @@ int div = 1000 * 1000;
 var memory = proc.WorkingSet64 /div;
 var available = proc.MaxWorkingSet/div ;
 
-Console.WriteLine($"Available Memory in MB {available} and current occupied is  MB {memory}  ");
+ Console.WriteLine($"Available Memory in MB {available} and current occupied is  MB {memory}  ");
+ 
+ VerificationTest.ProcessIntegers();
 
- Stopwatch sw = new Stopwatch();
+
+public class VerificationTest 
+{
+
+  public static void ProcessIntegers() 
+  {
+    Stopwatch sw = new Stopwatch();
 
   sw.Start();
+foreach(var item in Directory.GetFiles((Environment.CurrentDirectory + "//inputscores/")))
+{
 
+   List<int> nums = new List<int>();
+
+   List<Line> totallines  = FileContextReader.ReadFile(item);
+// data index starts from 2 in our test case
+  List<int> scores = totallines[1].LineContent.Split(' ').ToList().Select(p=> Convert.ToInt32(p)).ToList();
+  
+   List<int> players = totallines[3].LineContent.Split(' ').ToList().Select(p=> Convert.ToInt32(p)).ToList();
+
+    List<int> results  = ClimibingBoardOlympics.climbingLeaderboard(scores, players);
+foreach(var res in results)
+{
+  Console.WriteLine($"Current Standing position is {res}");
+}
+
+  }
+  }
+
+public static void ProcessSubStrings() {
+  Stopwatch sw = new Stopwatch();
+
+  sw.Start();
 foreach(var item in Directory.GetFiles((Environment.CurrentDirectory + "//input/")))
 {
-   Console.WriteLine($"Process Start  Time with with new Test Case {item} {timeSpan.ToString()}  Hmmm  {timeSpan.Hours}  : {timeSpan.Minutes} : {timeSpan.Seconds} ");
-
+ 
    List<int> nums = new List<int>();
 
  List<Line> totallines  = FileContextReader.ReadFile(item);
@@ -97,9 +127,6 @@ foreach (var line in currentlines)
         // Memory Available Here 
         
         
-        var memorystatus = proc.WorkingSet64 /div;
-
-    Console.WriteLine($"Available Memory is MB {available} and current occupied is MB  {memorystatus}  ");
       /* 
         foreach(var p in lstsets.ToList() )
         {
@@ -126,10 +153,12 @@ foreach (var line in currentlines)
          foreach(var i in nums)
          Console.WriteLine(i);
 sw.Stop();
-Console.WriteLine($"End Time  it takes {sw.ElapsedMilliseconds} current time is  {timeSpan.ToString()}  in MilliSeconds {timeSpan.Milliseconds}  {timeSpan.Hours}  : {timeSpan.Minutes} : {timeSpan.Seconds} ");
-
+}
        
 }  
+}
+
+
 
 
 
