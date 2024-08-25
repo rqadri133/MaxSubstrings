@@ -27,13 +27,6 @@ public class Leader
     
 }
 
-public class DiffClass 
-{
-    public int diff  {get;set;}
-    public int currentRank { get;set;}
-    public int prevScore {get;set;}
-    
-}
 
     /*
      * Complete the 'climbingLeaderboard' function below.
@@ -52,12 +45,10 @@ public class DiffClass
         int score_max = ranked.Max();
         
         List<int> currentRanks = new List<int>();
-        List<DiffClass> lstDifferences = new List<DiffClass>();
         List<Leader> lederboard = new List<Leader>();
         var rankedData =  ranked.OrderByDescending(p=>p).GroupBy(p=>p).SelectMany((g, i) =>
                        g.Select(e => new Leader { Score = e, Rank = i + 1 }))
                    .ToList();
-        int counter = 0;
         
         foreach(int currentscore in player)
         {
@@ -76,7 +67,7 @@ public class DiffClass
                 
                   var rankObject = rankedData.First(p=> p.Score == score_max);
                // So this will rank after min
-               Console.WriteLine($"Current Score is {currentscore} and Rank is {rankObject.Rank}");
+               Console.WriteLine($" prvious standing was {rankObject.Score} Current Score {currentscore} and Rank is {rankObject.Rank}");
                   currentRanks.Add(rankObject.Rank );  
                   
    
@@ -104,9 +95,9 @@ public class DiffClass
                 }
                 else
                 {
-                    // Find Closest Number 
+                    // Find Closest Number very important the loop will time out
                     int closest = ranked.Aggregate((x,y) => Math.Abs(x-currentscore) < Math.Abs(y-currentscore) ? x : y);
-                    Console.WriteLine($"The Closest number i have found is {closest}");
+                    Console.WriteLine($"The Closest score i have found is {closest}");
                     var currentRankObj = rankedData.Last(p=> p.Score == closest);
                    if(currentRankObj.Score > currentscore )
                    {
