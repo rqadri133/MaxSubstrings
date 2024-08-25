@@ -29,6 +29,9 @@ var available = proc.MaxWorkingSet/div ;
 
 Console.WriteLine($"Available Memory in MB {available} and current occupied is  MB {memory}  ");
 
+ Stopwatch sw = new Stopwatch();
+
+  sw.Start();
 
 foreach(var item in Directory.GetFiles((Environment.CurrentDirectory + "//input/")))
 {
@@ -70,7 +73,7 @@ foreach (var line in currentlines)
                    List<char> sub_str = arrChar.GetRange(startIndex,endIndex);
                    //var subs = new SubSet();
                    //subs.current = sub_str.ToString(); 
-                   //Console.WriteLine($"Currently adding {subs.current} with startIndex {startIndex} and {endIndex} ");
+                   Console.WriteLine($"Currently processing for {startIndex} to End {endIndex} with startIndex {startIndex} and {endIndex} ");
                    // lstsets.Add(subs);  
                    nums.Add(Result.countDistinctSubstring(sub_str));
                 }
@@ -122,8 +125,8 @@ foreach (var line in currentlines)
 
          foreach(var i in nums)
          Console.WriteLine(i);
-
-Console.WriteLine($"End Time  {timeSpan.ToString()}  in MilliSeconds {timeSpan.Milliseconds}  {timeSpan.Hours}  : {timeSpan.Minutes} : {timeSpan.Seconds} ");
+sw.Stop();
+Console.WriteLine($"End Time  it takes {sw.ElapsedMilliseconds} current time is  {timeSpan.ToString()}  in MilliSeconds {timeSpan.Milliseconds}  {timeSpan.Hours}  : {timeSpan.Minutes} : {timeSpan.Seconds} ");
 
        
 }  
