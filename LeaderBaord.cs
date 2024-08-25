@@ -139,6 +139,51 @@ public class Leader
         
     }
 
+        public static List<int> climbingLeaderboardFast(List<int> ranked, List<int> player)
+    {
+        int score_min = ranked.Min();
+        int score_max = ranked.Max();
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        stopwatch.Start();
+
+        List<int> currentRanks = new List<int>();
+        List<Leader> lederboard = new List<Leader>();
+        var rankedData =  ranked.OrderByDescending(p=>p).GroupBy(p=>p).SelectMany((g, i) =>
+                       g.Select(e => new Leader { Score = e, Rank = i + 1 }))
+                   .ToList();
+ 
+         foreach(var p in player )
+         {
+             if(rankedData.Any(m=>m.Score == p))
+             {
+                var first = rankedData.First(m=>m.Score == p);
+                currentRanks.Add(first.Rank);
+             }
+             else 
+             {
+                  int closest = ranked.Aggregate((x,y) => Math.Abs(x-p) < Math.Abs(y-p) ? x : y);
+                    Console.WriteLine($"The Closest score i have found is {closest}");
+                    var currentRankObj = rankedData.Last(p=> p.Score == closest);
+                   if(currentRankObj.Score > p )
+                   {
+                         currentRanks.Add(currentRankObj.Rank + 1  ); 
+                   }
+                   else if(currentRankObj.Score < p )
+                   {
+                    
+                    // it will replace the rank
+                     currentRanks.Add(currentRankObj.Rank ); 
+
+                       
+                    }
+             }
+
+         }   
+        
+        return currentRanks;
+        
+    }
+
 }
 
 

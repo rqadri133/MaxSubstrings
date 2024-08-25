@@ -51,7 +51,7 @@ foreach(var item in Directory.GetFiles((Environment.CurrentDirectory + "//inputs
   
    List<int> players = totallines[3].LineContent.Split(' ').ToList().Select(p=> Convert.ToInt32(p)).ToList();
 
-    List<int> results  = ClimibingBoardOlympics.climbingLeaderboard(scores, players);
+    List<int> results  = ClimibingBoardOlympics.climbingLeaderboardFast(scores, players);
 foreach(var res in results)
 {
   Console.WriteLine($"Current Standing position is {res}");
