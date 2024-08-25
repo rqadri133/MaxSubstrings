@@ -11,6 +11,7 @@ using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Text;
 using System;
+using System.Diagnostics;
 
 public class Leader
 {
@@ -20,6 +21,12 @@ public class Leader
         set;
     }
     public int Score
+    {
+        get;
+        set;
+    }
+
+    public bool IsDuplicate
     {
         get;
         set;
@@ -43,12 +50,18 @@ public class Leader
     {
         int score_min = ranked.Min();
         int score_max = ranked.Max();
-        
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        stopwatch.Start();
+                Console.WriteLine($"It stops at {stopwatch.Elapsed.Microseconds/100000}");            
+
         List<int> currentRanks = new List<int>();
         List<Leader> lederboard = new List<Leader>();
         var rankedData =  ranked.OrderByDescending(p=>p).GroupBy(p=>p).SelectMany((g, i) =>
                        g.Select(e => new Leader { Score = e, Rank = i + 1 }))
                    .ToList();
+
+        stopwatch.Stop();
+        Console.WriteLine($"It stops at {stopwatch.ElapsedMilliseconds/1000000}");            
         
         foreach(int currentscore in player)
         {
